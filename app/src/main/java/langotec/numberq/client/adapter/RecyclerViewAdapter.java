@@ -135,7 +135,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Cart.getInstance().remove(position);
+                                Cart.getInstance(context).remove(position);
                                 data.remove(position);
                                 RecyclerViewAdapter.this.notifyDataSetChanged();//更新畫面
                             }

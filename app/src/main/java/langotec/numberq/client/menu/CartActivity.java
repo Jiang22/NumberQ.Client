@@ -23,7 +23,7 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void setLayout(){
-        cart = Cart.getInstance();
+        cart = Cart.getInstance(context);
 
     }
 }

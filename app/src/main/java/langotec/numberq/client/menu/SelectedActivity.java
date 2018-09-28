@@ -44,6 +44,7 @@ public class SelectedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_selected);
         context = this;
         intent = getIntent();
+        cart = Cart.getInstance(context);
 
         //region 第一次進入Activity還是翻轉螢幕的判斷及處理
         if (savedInstanceState == null)
@@ -54,6 +55,12 @@ public class SelectedActivity extends AppCompatActivity {
 
         findEntity();
         setLayout();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        cart.saveCart(context);
     }
 
     @Override
@@ -133,7 +140,7 @@ public class SelectedActivity extends AppCompatActivity {
 
     //region 按下加到購物車的處理method
     public void onCartClick(View view){
-        cart = Cart.getInstance();
+        cart = Cart.getInstance(context);
 
         if (menu.getFrom().equals("fromSelectActivity"))
             showDialog();
