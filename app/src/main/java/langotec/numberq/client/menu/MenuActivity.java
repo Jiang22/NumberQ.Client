@@ -18,7 +18,7 @@ public class MenuActivity extends AppCompatActivity {
     private ListView listView;
     private Context context;
     private ArrayList<Menu> menus;
-    private CustomBaseAdapter adapter;
+    private MenuBaseAdapter adapter;
     private String headName;
     private String branchName;
     private OkHttpClient conn;
@@ -54,7 +54,7 @@ public class MenuActivity extends AppCompatActivity {
         menus.add(new Menu("https://www.dintaifung.com.tw/archive/images/food/BN065.png", "乾煸四季豆", "130", getDesc(R.string.menu_dessert2), headName, branchName));
         menus.add(new Menu("https://www.dintaifung.com.tw/archive/images/food/BN061.png", "炸排骨", "130", getDesc(R.string.menu_dessert3), headName, branchName));
 
-        adapter = new CustomBaseAdapter(context, menus);
+        adapter = new MenuBaseAdapter(context, menus);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

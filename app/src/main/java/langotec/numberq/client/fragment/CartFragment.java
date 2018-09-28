@@ -8,7 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+
+import java.util.ArrayList;
 
 import langotec.numberq.client.R;
 import langotec.numberq.client.adapter.RecyclerViewAdapter;
@@ -32,11 +33,11 @@ public class CartFragment extends Fragment {
                 container, false);
 
         //取得Cart裡Menu的內容
-        Object[] menus = new Object[cart.size()];
+        ArrayList menus = new ArrayList();
 
         if (!cart.isEmpty()) {
             for (int i = 0 ; i < cart.size(); i++){
-                menus[i] =  cart.get(i);
+                menus.add(cart.get(i));
             }
 
             RecyclerViewAdapter adapter = new RecyclerViewAdapter(menus);
