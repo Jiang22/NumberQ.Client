@@ -15,12 +15,13 @@ public class Menu implements Serializable{
 
 	private String imageURL;
 	private String productName;
-    private String productType;
+	private String productType;
 	private String price;
 	private String desc;
 	private String waitTime;
 	private String headName;
 	private String branchName;
+	private String from;
 	private int waitNum;
 	private int quantityNum = 1;
 	private final short MAXQUANTITY = 200; //最大單筆菜單可加入購物車數量
@@ -32,6 +33,7 @@ public class Menu implements Serializable{
 		setDesc(desc);
 		setHeadName(headName);
 		setBranchName(branchName);
+		setFrom("fromSelectActivity");
 	}
 
 	//region getters & setters
@@ -68,15 +70,15 @@ public class Menu implements Serializable{
 		this.desc = desc;
 	}
 
-    public String getType() {
-        return productType;
-    }
+	public String getType() {
+		return productType;
+	}
 
-    public void setType(String type) {
-        this.productType = type;
-    }
+	public void setType(String type) {
+		this.productType = type;
+	}
 
-    //Todo: 計算等待時間的功能
+	//Todo: 計算等待時間的功能
 	public String getWaitTime() {
 		Calendar date = Calendar.getInstance();
 		String minutes = Integer.toString(date.get(Calendar.MINUTE));
@@ -85,7 +87,7 @@ public class Menu implements Serializable{
 			minutes = "0" + minutes;
 		if (hours.length() == 1)
 			hours = "0" + hours;
-        waitTime = hours + ":" + minutes;
+		waitTime = hours + ":" + minutes;
 		return waitTime;
 	}
 
@@ -100,18 +102,18 @@ public class Menu implements Serializable{
 			this.waitNum = 0;
 	}
 
-    public void setQuantityNum(int quantityNum) {
-	    if (quantityNum >= 1 && quantityNum <= MAXQUANTITY)
-	        this.quantityNum = quantityNum;
-        else if (quantityNum > MAXQUANTITY)
-            this.quantityNum = MAXQUANTITY;
-	    else
-	        this.quantityNum = 1;
-    }
+	public void setQuantityNum(int quantityNum) {
+		if (quantityNum >= 1 && quantityNum <= MAXQUANTITY)
+			this.quantityNum = quantityNum;
+		else if (quantityNum > MAXQUANTITY)
+			this.quantityNum = MAXQUANTITY;
+		else
+			this.quantityNum = 1;
+	}
 
-    public int getQuantityNum() {
-        return quantityNum;
-    }
+	public int getQuantityNum() {
+		return quantityNum;
+	}
 
 	public String getHeadName() {
 		return headName;
@@ -129,20 +131,28 @@ public class Menu implements Serializable{
 		this.branchName = branchName;
 	}
 
+	public String getFrom() {
+		return from;
+	}
+
+	public void setFrom(String from) {
+		this.from = from;
+	}
+
 	//endregion
 
-    public void setImageView(ImageView imageView){
-        Picasso
-			.get()
-			.load(imageURL)
-			.into(imageView, new com.squareup.picasso.Callback() {
-				@Override
-				public void onSuccess() {
-				}
+	public void setImageView(ImageView imageView){
+		Picasso
+				.get()
+				.load(imageURL)
+				.into(imageView, new com.squareup.picasso.Callback() {
+					@Override
+					public void onSuccess() {
+					}
 
-				@Override
-				public void onError(Exception e) {
-				}
-			});
+					@Override
+					public void onError(Exception e) {
+					}
+				});
 	}
 }

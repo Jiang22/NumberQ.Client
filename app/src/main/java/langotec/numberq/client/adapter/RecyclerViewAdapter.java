@@ -3,7 +3,9 @@ package langotec.numberq.client.adapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,27 +13,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import langotec.numberq.client.R;
+import langotec.numberq.client.menu.Cart;
 import langotec.numberq.client.menu.Menu;
 import langotec.numberq.client.menu.MenuActivity;
+import langotec.numberq.client.menu.SelectedActivity;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     //先用Object拿東西進來再轉型
-    private Object[] data;
+    private ArrayList data;
+    private Context context;
 
-    public RecyclerViewAdapter(Object[] data) {
+    public RecyclerViewAdapter(ArrayList data) {
         this.data = data;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = null;
-        if (data[0] instanceof String) {
+        if (data.get(0) instanceof String) {
             view = LayoutInflater.from(viewGroup.getContext()).inflate(
                     R.layout.cardview_store, viewGroup, false);
 
-        }else if (data[0] instanceof Menu){
+        }else if (data.get(0) instanceof Menu){
             view = LayoutInflater.from(viewGroup.getContext()).inflate(
                     R.layout.cardview_cart, viewGroup, false);
         }
@@ -41,12 +49,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         View view = viewHolder.view;
-        final Context context = view.getContext();
+        context = view.getContext();
 
-        if (data[position] instanceof String) {
-            String[] data = (String[]) this.data;
+        if (data.get(0) instanceof String) {
+            String data = (String) this.data.get(position);
             TextView textStoreName = (TextView) view.findViewById(R.id.textView1);
             ImageView storeIconImage = (ImageView) view.findViewById(R.id.store_icon);
 
@@ -65,11 +73,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 textStoreName.setTextColor(0xFFAAAAAA);
                 storeIconImage.setImageDrawable(context.getDrawable(R.drawable.bafun));
             }
-            textStoreName.setText(data[position]);
+            textStoreName.setText(data);
         }
 
-        else if (data[position] instanceof Menu){
-            Menu menu = (Menu) data[position];
+        else if (data.get(position) instanceof Menu){
+            Menu menu = (Menu) data.get(position);
 
             ImageView cartIconImage = (ImageView) view.findViewById(R.id.cart_imageView);
             TextView cartStoreName = (TextView) view.findViewById(R.id.cartStoreName_textView);
@@ -85,10 +93,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     context.getResources().getString(R.string.menu_totalPrice)
                     + (Integer.parseInt(menu.getPrice()) * menu.getQuantityNum()));
 
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showDialog(position);
+                    return false;
+                }
+            });
+
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    Toast.makeText(context, context.getResources().getString(R.string.cart_click),
+                            Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -96,11 +113,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        return data.length;
+        return data.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
         public View view;
 
         public ViewHolder(View view){
@@ -108,5 +124,42 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             this.view = view;
         }
     }
+
+    //修改購物車內容的對話框功能
+    private void showDialog(final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(context.getResources().getString(R.string.cart_modify))
+                .setIcon(android.R.drawable.ic_dialog_info)
+//                .setMessage("目前無法連線，請檢查您的網路設定，謝謝您")
+                .setPositiveButton(context.getResources().getString(R.string.cart_deleteMenu),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Cart.getInstance().remove(position);
+                                data.remove(position);
+                                RecyclerViewAdapter.this.notifyDataSetChanged();//更新畫面
+                            }
+                        })
+                .setNegativeButton(context.getResources().getString(R.string.cart_modifyQuantity)
+                        , new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Menu menu = (Menu) data.get(position);
+                                menu.setFrom("fromCartFragment");
+                                Intent intent = new Intent();
+                                intent.putExtra("Menu", menu);
+                                intent.setClass(context, SelectedActivity.class);
+                                ((Activity)context).startActivity(intent);
+                            }
+                        })
+                .setNeutralButton(context.getResources().getString(R.string.menu_cancel),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create().show();
+    }
+
 }
 

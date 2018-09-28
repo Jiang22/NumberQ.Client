@@ -12,7 +12,7 @@ public class CartActivity extends AppCompatActivity {
     private Cart cart;
     private ListView listView;
     private Context context;
-    private CustomBaseAdapter adapter;
+    private MenuBaseAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

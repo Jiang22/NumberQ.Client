@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import langotec.numberq.client.adapter.MainSliderAdapter;
 import langotec.numberq.client.adapter.RecyclerViewAdapter;
 import langotec.numberq.client.MainActivity;
@@ -62,7 +64,11 @@ public class RecommendFragment extends Fragment {
         // 選擇一種Layout管理器這邊是選擇（linear layout manager）
         mLayoutManager = new LinearLayoutManager(context);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        String[] myDataset = context.getResources().getStringArray(R.array.store);
+        String[] mDataset = context.getResources().getStringArray(R.array.store);
+        ArrayList myDataset = new ArrayList();
+        for (int i = 0; i < mDataset.length; i++){
+            myDataset.add(mDataset[i]);
+        }
 
         // 設定適配器
         mAdapter = new RecyclerViewAdapter(myDataset);
