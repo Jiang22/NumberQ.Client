@@ -1,15 +1,11 @@
 package langotec.numberq.client.menu;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -19,18 +15,15 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import langotec.numberq.client.MainActivity;
 import langotec.numberq.client.R;
-import langotec.numberq.client.adapter.RecyclerViewAdapter;
 
 public class SelectedActivity extends AppCompatActivity {
     private ImageView foodImage, subtractImage, plusImage;
-    private TextView nameText, descText, waitText, timeText, totalText, cartText;
+    private TextView nameText, descText, waitText, timeText, totalText;
     private EditText quantityText;
     private Intent intent;
     private Menu menu;
@@ -54,6 +47,8 @@ public class SelectedActivity extends AppCompatActivity {
 
         findEntity();
         setLayout();
+        subtractImage.setOnClickListener(new QuantityChange());
+        plusImage.setOnClickListener(new QuantityChange());
     }
 
     @Override
@@ -75,7 +70,6 @@ public class SelectedActivity extends AppCompatActivity {
         quantityText = (EditText) findViewById(R.id.quantityText);
         plusImage = (ImageView) findViewById(R.id.plusView);
         totalText = (TextView) findViewById(R.id.totalText);
-        cartText = (TextView) findViewById(R.id.cartText);
     }
 
     @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})//這行不知道幹嘛，系統想加進去而已
@@ -87,21 +81,10 @@ public class SelectedActivity extends AppCompatActivity {
         waitText.setText(getResources().getString(R.string.menu_waitNum) + " " +  menu.getWaitNum());
         timeText.setText(getResources().getString(R.string.menu_waitTime) + " " + menu.getWaitTime());
         quantityText.setText("" + menu.getQuantityNum());
-
         //設定EditText的輸入類型
         quantityText.setInputType(InputType.TYPE_CLASS_NUMBER);
-
         //加入鍵盤是否跳出的監聽器
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(new MyTypingListener());
-
-        //判斷cartButton要放什麼字
-        if (menu.getFrom().equals("fromSelectActivity"))
-            cartText.setText(getResources().getString(R.string.menu_putInCart));
-        else if (menu.getFrom().equals("fromCartFragment"))
-            cartText.setText(getResources().getString(R.string.menu_backToCart));
-
-        subtractImage.setOnClickListener(new QuantityChange());
-        plusImage.setOnClickListener(new QuantityChange());
         setTotalText();
     }
 
@@ -134,24 +117,7 @@ public class SelectedActivity extends AppCompatActivity {
     //region 按下加到購物車的處理method
     public void onCartClick(View view){
         cart = Cart.getInstance();
-
-        if (menu.getFrom().equals("fromSelectActivity"))
-            showDialog();
-            //如果是從購物車畫面進入修改數量，要處理修改完跳回購物車，及刪除/新增Cart的內容
-        else if (menu.getFrom().equals("fromCartFragment")){
-            intent.setClass(context, MainActivity.class);
-            intent.putExtra("from", "fromSelectActivity");
-            startActivity(intent);
-            for (int i = 0 ; i < cart.size(); i++){
-                if (cart.get(i).getFrom().equals("fromCartFragment")){
-                    cart.remove(i);
-                }
-            }
-            Menu m = new Menu(menu.getImageURL(), menu.getProductName(),
-                    menu.getPrice(), menu.getDesc(), menu.getHeadName(), menu.getBranchName());
-            m.setQuantityNum(menu.getQuantityNum());
-            cart.add(m);
-        }
+        showDialog();
     }
 
     private void showDialog() {
@@ -197,12 +163,10 @@ public class SelectedActivity extends AppCompatActivity {
         @Override
         public void onGlobalLayout() {
             int heightDiff = rootView.getRootView().getHeight() - rootView.getHeight();
-            ConstraintLayout bottomLayout = (ConstraintLayout) findViewById(R.id.bottomLayout);
 //            Log.e("heightDiff", heightDiff + "");
 //            Log.e("dptoPx", dpToPx(context, 200) + "");
             if (heightDiff > dpToPx(context, 200)) {
 //                Log.e("SelectedActivity", "keyboard opened");
-                bottomLayout.setMaxHeight(0);//設定加到購物車的高度為0(隱藏)
                 quantityText.requestFocus();    //focus EditText (requestFocus is a method from View )
                 quantityText.postDelayed(new Runnable() {
                     @Override
@@ -213,16 +177,8 @@ public class SelectedActivity extends AppCompatActivity {
                 }, 50);//一定要delay動作才有移動游標的效果，不知為什麼
             }else {
 //                Log.e("SelectedActivity", "keyboard closed");
-
-                //設定加到購物車的高度為50dp
-                float scale = context.getResources().getDisplayMetrics().density;
-                bottomLayout.setMaxHeight((int) (50 * scale + 0.5f));
-
-                if (quantityText.getText().length() > 0) {
-                    menu.setQuantityNum(Integer.parseInt(quantityText.getText().toString()));
-                    quantityText.setText("" + menu.getQuantityNum());
-                }else
-                    quantityText.setText("1");
+                menu.setQuantityNum(Integer.parseInt(quantityText.getText().toString()));
+                quantityText.setText("" + menu.getQuantityNum());
                 quantityText.clearFocus();  //clear EditText focus
                 setTotalText();
             }

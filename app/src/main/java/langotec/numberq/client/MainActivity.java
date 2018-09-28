@@ -152,11 +152,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         setupViewPager(viewPager);
-        //如果是由修改購物車數量啟動MainActivity，需跳轉回到購物車頁面
-        String extra = (String) getIntent().getStringExtra("from");
-        if(extra != null && extra.equals("fromSelectActivity")) {
-            viewPager.setCurrentItem(2);
-        }
     }
 
     @Override

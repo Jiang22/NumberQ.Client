@@ -12,13 +12,13 @@ import java.util.ArrayList;
 
 import langotec.numberq.client.R;
 
-public class MenuBaseAdapter extends BaseAdapter {
+public class CustomBaseAdapter extends BaseAdapter {
 
 	private Context context;
 	private ArrayList<Menu> menus;
 	private LayoutInflater mInflater;
 
-	public MenuBaseAdapter(Context context, ArrayList<Menu> items) {
+	public CustomBaseAdapter(Context context, ArrayList<Menu> items) {
 		this.context = context;
 		this.menus = items;
 		mInflater = LayoutInflater.from(context);
