@@ -5,5 +5,4 @@
     android:id="@+id/cart_recyclerView"
     android:scrollbars="vertical"
     tools:context="langotec.numberq.client.fragment.CartFragment">
-
 </android.support.v7.widget.RecyclerView>

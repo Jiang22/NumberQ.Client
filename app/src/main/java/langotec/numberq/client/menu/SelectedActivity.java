@@ -1,32 +1,27 @@
 package langotec.numberq.client.menu;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import langotec.numberq.client.MainActivity;
 import langotec.numberq.client.R;
-import langotec.numberq.client.adapter.RecyclerViewAdapter;
 
 public class SelectedActivity extends AppCompatActivity {
     private ImageView foodImage, subtractImage, plusImage;
@@ -68,6 +63,34 @@ public class SelectedActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.putSerializable("Menu", menu);
     }
+
+    //region 處理標題列的部分
+    @Override
+    public boolean onPrepareOptionsMenu(android.view.Menu menu) {
+        menu.findItem(R.id.search_button).setVisible(false);
+        menu.findItem(R.id.menu_cart_clear).setVisible(false);
+        menu.findItem(R.id.menu_cart_createOrder).setVisible(false);
+        menu.findItem(R.id.menu_backHome).setVisible(true);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_backHome:
+                startActivity(new Intent(context, MainActivity.class));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    //endregion
 
     private void findEntity(){
         rootView = (View) findViewById(R.id.selected_constraintLayout);

@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +16,15 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import langotec.numberq.client.MainActivity;
 import langotec.numberq.client.R;
-import langotec.numberq.client.menu.Cart;
+import langotec.numberq.client.fragment.CartFragment;
 import langotec.numberq.client.menu.Menu;
 import langotec.numberq.client.menu.MenuActivity;
 import langotec.numberq.client.menu.SelectedActivity;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-    //先用Object拿東西進來再轉型
+    //先用ArrayList拿東西進來再轉型
     private ArrayList data;
     private Context context;
 
@@ -130,14 +130,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(context.getResources().getString(R.string.cart_modify))
                 .setIcon(android.R.drawable.ic_dialog_info)
-//                .setMessage("目前無法連線，請檢查您的網路設定，謝謝您")
                 .setPositiveButton(context.getResources().getString(R.string.cart_deleteMenu),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Cart.getInstance(context).remove(position);
+                                //移除Cart內選定的商品
                                 data.remove(position);
-                                RecyclerViewAdapter.this.notifyDataSetChanged();//更新畫面
+
+                                //更新Adapter的畫面
+                                RecyclerViewAdapter.this.notifyDataSetChanged();
+
+                                //更新CartFragment的畫面
+                                CartFragment cartFragment = MainActivity.cartFragment;
+                                android.support.v4.app.FragmentTransaction ft =
+                                        cartFragment.getFragmentManager().beginTransaction();
+                                ft.detach(cartFragment).attach(cartFragment).commit();
                             }
                         })
                 .setNegativeButton(context.getResources().getString(R.string.cart_modifyQuantity)

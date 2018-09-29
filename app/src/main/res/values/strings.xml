@@ -6,8 +6,6 @@
     <string name="tab3">CART</string>
     <string name="tab4">MORE</string>
 
-    <string name="search">Search</string>
-
     <string name="title_activity_welcome">WelcomeActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
@@ -33,12 +31,12 @@
     <string name="label_hide_indicators">Hide Indicators</string>
     <string name="label_loop_slides">Loop slides: </string>
     <array name="page_indicators">
-        <item>Circle</item>
-        <item>Dash</item>
-        <item>Round Square</item>
-        <item>Square</item>
-        <item>Custom</item>
+        <item>號碼牌</item>
+        <item>訂單</item>
+        <item>購物車</item>
+        <item>更多...</item>
     </array>
+
     <string name="server">https://flashmage.000webhostapp.com/</string>
     <string name="select">query.php</string>
     <string name="insert">insert.php</string>
@@ -59,7 +57,6 @@
     <string name="phpSQLShowColumns">cv</string>
     <string name="title_activity_pay_select">選擇支付方式</string>
     <string name="title_activity_googlemap">餐廳位置查詢"</string>
-
 
     <string name="menu_app_name">NumberQ_Menu</string>
     <string name="menu_no_record">No record!</string>
@@ -87,5 +84,12 @@
     <string name="cart_modify">修改內容</string>
     <string name="cart_deleteMenu">刪除菜單</string>
     <string name="cart_modifyQuantity">修改數量</string>
+    <string name="cart_isEmpty">您的購物車內沒有商品</string>
+    <string name="cart_clearCart">確定要清除購物車內的商品嗎?</string>
+
+    <string name="menuItem_search">Search</string>
+    <string name="menuItem_home">回到首頁</string>
+    <string name="menuItem_clearAll">清除購物車</string>
+    <string name="menuItem_createOrder">結帳</string>
 
 </resources>

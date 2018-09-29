@@ -13,7 +13,6 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -30,8 +29,8 @@ import langotec.numberq.client.fragment.RecommendFragment;
 
 
 public class MainActivity extends AppCompatActivity {
-    //先隨便丟一個，再麻煩做成strings
-    private String[] titles = {"號碼牌", "訂單", "購物車", "更多..."};
+    //title Array
+    private String[] titles;
     //Location
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 101;
     public static LocationManager lm;
@@ -47,9 +46,12 @@ public class MainActivity extends AppCompatActivity {
     //Fragments
     private RecommendFragment recommendFragment;
     private OrderFragment orderFragment;
-    private CartFragment cartFragment;
     private MoreFragment moreFragment;
     private MenuItem prevMenuItem;
+
+    /*為了讓AlertDialog裡的static方法能夠拿到cartFragment變數來更新
+    CartFragment的畫面，CartFragment只能設為public static了*/
+    public static CartFragment cartFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         //Initializing viewPager
-
+        titles = getResources().getStringArray(R.array.page_indicators);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -237,10 +239,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.menu_backHome).setVisible(false);
+        menu.findItem(R.id.menu_cart_clear).setVisible(false);
+        menu.findItem(R.id.menu_cart_createOrder).setVisible(false);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.options,menu);
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options,menu);
+        inflater.inflate(R.menu.menu_main,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -252,7 +261,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
-
 }
