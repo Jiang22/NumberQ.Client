@@ -21,7 +21,7 @@
 
     <string name="locationManager">Location Manager</string>
     <string name="locationMessage">GPS目前尚未啟用\n請問是否現在設定啟用GPS?</string>
-    <string name="setPositiveButton">啟用</string>
+    <string name="setPositiveButton">On</string>
     <string name="setNegativeButton">不啟用</string>
 
     <string name="label_loading">This Is Empty View</string>
