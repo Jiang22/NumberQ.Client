@@ -59,12 +59,17 @@ public class MainActivity extends AppCompatActivity {
 
         //take location bundle
         Bundle bundle = getIntent().getExtras();
-        if (lat == 0.0){
-            lat = bundle.getDouble("lat");
+        try{
+            if (lat == 0.0){
+                lat = bundle.getDouble("lat");
+            }
+            if (lng == 0.0){
+                lng = bundle.getDouble("lng");
+            }
+        }catch (NullPointerException e){
+            Log.e("LocationErr",e.toString());
         }
-        if (lng == 0.0){
-            lng = bundle.getDouble("lng");
-        }
+
         Log.e("Location","Lat:"+lat+" Lng:"+lng);
 
         //Initializing the bottomNavigationView
