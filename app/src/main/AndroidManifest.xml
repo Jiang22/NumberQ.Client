@@ -39,6 +39,7 @@
         <activity android:name=".login.SendPassActivity"></activity>
         <activity android:name=".menu.MenuActivity"></activity>
         <activity android:name=".menu.SelectedActivity"></activity>
+        <activity android:name=".menu.CheckOutActivity"></activity>
         <activity
             android:name="langotec.numberq.client.map.Activity_GoogleMap"
             android:label="@string/title_activity_googlemap"

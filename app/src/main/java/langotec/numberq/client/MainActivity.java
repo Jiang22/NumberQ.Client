@@ -1,6 +1,7 @@
 package langotec.numberq.client;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -52,12 +53,13 @@ public class MainActivity extends AppCompatActivity {
     /*為了讓AlertDialog裡的static方法能夠拿到cartFragment變數來更新
     CartFragment的畫面，CartFragment只能設為public static了*/
     public static CartFragment cartFragment;
+    private static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        context = this;
         //Location
         // 取得定位服務的LocationManager物件
         lm = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -260,5 +262,9 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public static Context getContext() {
+        return context.getApplicationContext();
     }
 }

@@ -18,9 +18,9 @@ import java.util.ArrayList;
 
 import langotec.numberq.client.MainActivity;
 import langotec.numberq.client.R;
+import langotec.numberq.client.dbConnect.MenuDBConn;
 import langotec.numberq.client.fragment.CartFragment;
 import langotec.numberq.client.menu.Menu;
-import langotec.numberq.client.menu.MenuActivity;
 import langotec.numberq.client.menu.SelectedActivity;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
@@ -54,15 +54,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         context = view.getContext();
 
         if (data.get(0) instanceof String) {
-            String data = (String) this.data.get(position);
+            final String data = (String) this.data.get(position);
             TextView textStoreName = (TextView) view.findViewById(R.id.textView1);
             ImageView storeIconImage = (ImageView) view.findViewById(R.id.store_icon);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), MenuActivity.class);
-                    context.startActivity(intent);
+                    new MenuDBConn(context, data).execute();
+//                    Intent intent = new Intent(v.getContext(), MenuActivity.class);
+//                    context.startActivity(intent);
                 }
             });
 
@@ -87,10 +88,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             menu.setImageView(cartIconImage);
             cartStoreName.setText(menu.getHeadName() + "-" + menu.getBranchName());
             cartDesc.setText(menu.getProductName() + "\t\t" +
-                    context.getResources().getString(R.string.menu_NT) + menu.getPrice());
+                    context.getResources().getString(R.string.menu_singlePrice) + menu.getPrice());
             cartTotal.setText(context.getResources().getString(R.string.menu_quantity) +
                     menu.getQuantityNum() + "\t\t" +
-                    context.getResources().getString(R.string.menu_totalPrice)
+                    context.getResources().getString(R.string.menu_NT)
                     + (Integer.parseInt(menu.getPrice()) * menu.getQuantityNum()));
 
             view.setOnLongClickListener(new View.OnLongClickListener() {
@@ -147,8 +148,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                                 ft.detach(cartFragment).attach(cartFragment).commit();
                             }
                         })
-                .setNegativeButton(context.getResources().getString(R.string.cart_modifyQuantity)
-                        , new DialogInterface.OnClickListener() {
+                .setNegativeButton(context.getResources().getString(R.string.cart_modifyQuantity),
+                        new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 Menu menu = (Menu) data.get(position);

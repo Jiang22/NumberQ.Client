@@ -177,8 +177,8 @@ public class SelectedActivity extends AppCompatActivity {
                     cart.remove(i);
                 }
             }
-            Menu m = new Menu(menu.getImageURL(), menu.getProductName(),
-                    menu.getPrice(), menu.getDesc(), menu.getHeadName(), menu.getBranchName());
+            Menu m = new Menu(menu.getHeadName(), menu.getHeadId(), menu.getProductId(), menu.getType(),
+                    menu.getProductName(), menu.getPrice(), menu.getImageURL(), menu.isAvailable(), menu.getDesc());
             m.setQuantityNum(menu.getQuantityNum());
             cart.add(m);
         }
@@ -201,8 +201,8 @@ public class SelectedActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //強制製造一個新的相同Menu實體，防止物件指標重複指到相同Menu
-                        Menu m = new Menu(menu.getImageURL(), menu.getProductName(),
-                                menu.getPrice(), menu.getDesc(), menu.getHeadName(), menu.getBranchName());
+                        Menu m = new Menu(menu.getHeadName(), menu.getHeadId(), menu.getProductId(), menu.getType(),
+                                menu.getProductName(), menu.getPrice(), menu.getImageURL(), menu.isAvailable(), menu.getDesc());
                         m.setQuantityNum(menu.getQuantityNum());
                         cart.add(m);
                         Snackbar snackbar = Snackbar.make(findViewById(R.id.selected_constraintLayout),

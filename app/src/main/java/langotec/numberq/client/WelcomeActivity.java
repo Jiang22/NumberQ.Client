@@ -25,15 +25,26 @@ public class WelcomeActivity extends AppCompatActivity {
             "https://flashmage.000webhostapp.com/query.php?p=pass&w=storeList&n=10";
     private String qResult = "no record";
     private Context context;
+    boolean isFirst;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         context = this;
+        isFirst = true;
+        isFirst = getIntent().getBooleanExtra("isFirst", isFirst);
+        Log.e("isFirst", isFirst+"");
+        if (isFirst)
+            new OkHttpHandler().execute(MENU_SERVER);
+//        new OkHttpHandler().execute(STORE_SERVER);
+    }
 
-        new OkHttpHandler().execute(MENU_SERVER);
-        //new OkHttpHandler().execute(STORE_SERVER);
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (!isFirst)
+            finish();
     }
 
     private class OkHttpHandler extends AsyncTask <String, Void, Void> {

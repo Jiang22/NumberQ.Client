@@ -76,6 +76,7 @@
     <string name="menu_added_cancel">取消</string>
     <string name="menu_added_canceled">已取消</string>
     <string name="menu_quantity">數量:</string>
+    <string name="menu_singlePrice">單價:</string>
     <string name="menu_totalPrice">總價:</string>
     <string name="menu_putInCart">放入購物車</string>
     <string name="menu_backToCart">回到購物車</string>
@@ -91,5 +92,9 @@
     <string name="menuItem_home">回到首頁</string>
     <string name="menuItem_clearAll">清除購物車</string>
     <string name="menuItem_createOrder">結帳</string>
+
+    <string name="checkOut_title">我的訂單內容</string>
+    <string name="checkOut_use">使用</string>
+    <string name="checkOut_check">結帳</string>
 
 </resources>
