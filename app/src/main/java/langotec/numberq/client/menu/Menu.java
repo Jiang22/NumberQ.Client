@@ -172,6 +172,9 @@ public class Menu implements Serializable{
 		Picasso
 				.get()
 				.load(imageURL)
+				.resize(400, 300)
+//				.fit()
+				.centerCrop()
 				.into(imageView, new com.squareup.picasso.Callback() {
 					@Override
 					public void onSuccess() {

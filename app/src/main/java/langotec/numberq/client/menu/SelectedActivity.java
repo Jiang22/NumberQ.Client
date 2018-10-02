@@ -55,6 +55,7 @@ public class SelectedActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        System.gc();
         cart.saveCart(context);
     }
 
@@ -85,6 +86,7 @@ public class SelectedActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_backHome:
+                System.gc();
                 startActivity(new Intent(context, MainActivity.class));
                 break;
         }

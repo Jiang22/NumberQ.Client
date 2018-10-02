@@ -31,25 +31,22 @@ public class MenuActivity extends AppCompatActivity {
         setLayout();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        System.gc();
+    }
+
     private void setLayout() {
         ListView listView = findViewById(R.id.list);
         menus = (ArrayList) getIntent().getSerializableExtra("menuList");
-
         headName = "鼎泰豐";
         branchName = "信義店";
 
-        //Todo: 各種Menu所需參數從網路下載
+        //Todo: 獲取從MainActivity的店家資料
         setTitle(headName + " - " + branchName);
 
         listView.setEmptyView(findViewById(R.id.emptyView));
-
-//        menus.add(new Menu("https://www.dintaifung.com.tw/archive/images/food/BN057.png", "小菜", "70", getDesc(R.string.menu_dessert1), headName, branchName));
-//        menus.add(new Menu("https://www.dintaifung.com.tw/archive/images/food/BN065.png", "乾煸四季豆", "130", getDesc(R.string.menu_dessert2), headName, branchName));
-//        menus.add(new Menu("https://www.dintaifung.com.tw/archive/images/food/BN061.png", "炸排骨", "130", getDesc(R.string.menu_dessert3), headName, branchName));
-//
-//        menus.add(new Menu("https://www.dintaifung.com.tw/archive/images/food/BN057.png", "小菜", "70", getDesc(R.string.menu_dessert1), headName, "branch1"));
-//        menus.add(new Menu("https://www.dintaifung.com.tw/archive/images/food/BN065.png", "乾煸四季豆", "130", getDesc(R.string.menu_dessert2), headName, "branch2"));
-//        menus.add(new Menu("https://www.dintaifung.com.tw/archive/images/food/BN061.png", "炸排骨", "130", getDesc(R.string.menu_dessert3), headName, "branch3"));
 
         adapter = new MenuBaseAdapter(context, menus);
         listView.setAdapter(adapter);
@@ -91,6 +88,7 @@ public class MenuActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_backHome:
+                System.gc();
                 startActivity(new Intent(context, MainActivity.class));
                 break;
         }

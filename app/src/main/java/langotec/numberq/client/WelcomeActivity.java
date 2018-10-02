@@ -17,15 +17,15 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class WelcomeActivity extends AppCompatActivity {
+public class WelcomeActivity extends AppCompatActivity{
 
     private static final String MENU_SERVER =
             "https://ivychiang0304.000webhostapp.com/numberq/menuquery.php";
     private static final String STORE_SERVER =
             "https://flashmage.000webhostapp.com/query.php?p=pass&w=storeList&n=10";
-    private String qResult = "no record";
-    private Context context;
+    public static Context context;
     boolean isFirst;
+    private String qResult = "no record";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,80 +34,16 @@ public class WelcomeActivity extends AppCompatActivity {
         context = this;
         isFirst = true;
         isFirst = getIntent().getBooleanExtra("isFirst", isFirst);
-        Log.e("isFirst", isFirst+"");
-        if (isFirst)
+        if (isFirst) {
             new OkHttpHandler().execute(MENU_SERVER);
 //        new OkHttpHandler().execute(STORE_SERVER);
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (!isFirst)
-            finish();
-    }
-
-    private class OkHttpHandler extends AsyncTask <String, Void, Void> {
-
-        OkHttpClient client = new OkHttpClient();
-
-        @Override
-        protected Void doInBackground(String... urls) {
-
-            OkHttpClient okHttpClient = new OkHttpClient();
-
-            //String... urls傳進來的是陣列，所以用for迴圈跑完全部的內容
-            for (int index = 0; index < urls.length; index++) {
-
-                // FormBody放要傳的參數和值
-                FormBody formBody = new FormBody.Builder()
-                        .add("sname", "鼎泰豐")
-                        .build();
-
-                // 建立Request，設置連線資訊
-                Request request = new Request.Builder()
-                        .url(urls[index])
-                        .post(formBody) // 使用post連線
-                        .build();
-
-                // 建立Call
-                Call call = okHttpClient.newCall(request);
-
-                // 執行Call連線到網址
-                try {
-                    Response response = call.execute();//call.execute為同步工作
-                    if (response.isSuccessful() && response.code() == 200) {
-                        //同步方式下得到返回结果
-                        // response.code() return the HTTP status
-                        qResult = response.body().string().trim();
-                        if (qResult.equals("no record")) {
-                            Log.d("OkHttp result", "no record");
-                        } else {
-                            Log.d("OkHttp result", qResult);
-                        }
-//                    createFile(qResult);
-                        response.close();
-                    } else {
-                        Log.e("failed", " no Data!");
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void v) {
-            super.onPostExecute(v);
-            if (qResult != "no record") {
-                startActivity(new Intent().setClass(getApplicationContext(), MainActivity.class));
-                finish();
-            }else{
-                showDialog();
-            }
-
-        }
+        finish();
     }
 
     private void showDialog() {
@@ -130,5 +66,68 @@ public class WelcomeActivity extends AppCompatActivity {
                     }
                 })
                 .create().show();
+    }
+
+    private class OkHttpHandler extends AsyncTask <String, Void, Void> {
+
+        OkHttpClient client = new OkHttpClient();
+
+        @Override
+        protected Void doInBackground(String... urls) {
+
+            OkHttpClient okHttpClient = new OkHttpClient();
+
+            //String... urls傳進來的是陣列，所以用for迴圈跑完全部的內容
+            for (String url : urls) {
+
+                // FormBody放要傳的參數和值
+                FormBody formBody = new FormBody.Builder()
+                        .add("sname", "鼎泰豐")
+                        .build();
+
+                // 建立Request，設置連線資訊
+                Request request = new Request.Builder()
+                        .url(url)
+                        .post(formBody) // 使用post連線
+                        .build();
+
+                // 建立Call
+                Call call = okHttpClient.newCall(request);
+
+                // 執行Call連線到網址
+                try {
+                    Response response = call.execute();//call.execute為同步工作
+                    if (response.isSuccessful() && response.code() == 200) {
+                        //同步方式下得到返回结果
+                        // response.code() return the HTTP status
+                        qResult = response.body().string().trim();
+                        if (qResult.equals("no record")) {
+                            Log.d("OkHttp result", "no record");
+                        } else {
+//                            Log.d("OkHttp result", qResult);
+                        }
+//                    createFile(qResult);
+                        response.close();
+                    } else {
+                        Log.e("failed", " no Data!");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void v) {
+            super.onPostExecute(v);
+            if (!qResult.equals("no record")) {
+                startActivity(new Intent().setClass(getApplicationContext(), MainActivity.class));
+                finish();
+            }else{
+                showDialog();
+            }
+
+        }
     }
 }
