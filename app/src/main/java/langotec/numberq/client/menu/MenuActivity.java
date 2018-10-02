@@ -63,11 +63,6 @@ public class MenuActivity extends AppCompatActivity {
         });
     }
 
-    //Todo: 取得Menu描述(從網路上抓資料)
-    private String getDesc(int id) {
-        return getResources().getString(id);
-    }
-
     @Override
     public boolean onPrepareOptionsMenu(android.view.Menu menu) {
         menu.findItem(R.id.search_button).setVisible(false);

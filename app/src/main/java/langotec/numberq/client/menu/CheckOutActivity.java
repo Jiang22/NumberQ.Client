@@ -1,15 +1,19 @@
 package langotec.numberq.client.menu;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import langotec.numberq.client.MainActivity;
 import langotec.numberq.client.R;
 
 public class CheckOutActivity extends AppCompatActivity {
@@ -27,6 +31,33 @@ public class CheckOutActivity extends AppCompatActivity {
         orderList = new ArrayList<>();
         makeOrders();
         setLayout();
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(android.view.Menu menu) {
+        menu.findItem(R.id.search_button).setVisible(false);
+        menu.findItem(R.id.menu_cart_clear).setVisible(false);
+        menu.findItem(R.id.menu_cart_createOrder).setVisible(false);
+        menu.findItem(R.id.menu_backHome).setVisible(true);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_backHome:
+                System.gc();
+                startActivity(new Intent(context, MainActivity.class));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setLayout(){
