@@ -16,12 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import langotec.numberq.client.MainActivity;
 import langotec.numberq.client.R;
 import langotec.numberq.client.adapter.RecyclerViewAdapter;
 import langotec.numberq.client.menu.Cart;
-import langotec.numberq.client.menu.CheckOutActivity;
 
 public class CartFragment extends Fragment {
 
@@ -79,17 +78,15 @@ public class CartFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (!cart.isEmpty()) {
-            switch (item.getItemId()) {
-                case R.id.menu_cart_clear:
+        switch (item.getItemId()) {
+            case R.id.menu_cart_clear:
+                if (!cart.isEmpty())
                     showDialog();
-                    break;
-                case R.id.menu_cart_createOrder:
-                    startActivity(new Intent(getContext(), CheckOutActivity.class));
-                    break;
-            }
-        }else
-            Toast.makeText(getContext(), getString(R.string.cart_isEmpty), Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.menu_cart_createOrder:
+                startActivity(new Intent(getContext(), MainActivity.class));
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 

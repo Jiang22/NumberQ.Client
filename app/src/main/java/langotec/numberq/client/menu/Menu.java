@@ -1,11 +1,14 @@
 package langotec.numberq.client.menu;
 
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
 import java.util.Calendar;
+
+import langotec.numberq.client.R;
 
 //實作Serializable，讓intent或bundle可以丟此物件或存檔
 public class Menu implements Serializable{
@@ -19,24 +22,17 @@ public class Menu implements Serializable{
 	private String headName;
 	private String branchName;
 	private String from;
-	private String HeadId;
-	private String productId;
 	private int waitNum;
 	private int quantityNum = 1;
-	private boolean available;
 	private final short MAXQUANTITY = 200; //最大單筆菜單可加入購物車數量
 
-	public Menu(String headName, String HeadId, String productId, String productType,
-				String productName, String price, String image, boolean available, String desc) {
-		setHeadName(headName);
-		setHeadId(HeadId);
-		setProductId(productId);
-		setType(productType);
+	protected Menu(String image, String productName, String price, String desc,  String headName, String branchName) {
+		setImage(image);
 		setProductName(productName);
 		setPrice(price);
-		setImage(image);
-		setAvailable(available);
 		setDesc(desc);
+		setHeadName(headName);
+		setBranchName(branchName);
 		setFrom("fromSelectActivity");
 	}
 
@@ -143,30 +139,7 @@ public class Menu implements Serializable{
 		this.from = from;
 	}
 
-	public boolean isAvailable() {
-		return available;
-	}
-
-	public void setAvailable(boolean available) {
-		this.available = available;
-	}
-
-	public String getHeadId() {
-		return HeadId;
-	}
-
-	public void setHeadId(String headId) {
-		HeadId = headId;
-	}
-
-	public String getProductId() {
-		return productId;
-	}
-
-	public void setProductId(String productId) {
-		this.productId = productId;
-	}
-//endregion
+	//endregion
 
 	public void setImageView(ImageView imageView){
 		Picasso

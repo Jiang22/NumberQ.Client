@@ -165,7 +165,7 @@
             android:id="@+id/cartText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/menu_putInCart"
+            android:text="放入購物車"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/cartButton"
             app:layout_constraintEnd_toStartOf="@+id/cartButton"
